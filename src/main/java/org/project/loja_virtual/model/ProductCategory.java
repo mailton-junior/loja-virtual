@@ -5,14 +5,14 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "BRAND_PRODUCT")
-@SequenceGenerator(name = "SEQ_BRAND_PRODUCT", sequenceName = "SEQ_BRAND_PRODUCT", allocationSize = 1, initialValue = 1)
-public class BrandProduct implements Serializable {
+@Table(name = "PRODUCT_CATEGORY")
+@SequenceGenerator(name = "SEQ_PRODUCT_CATEGORY", sequenceName = "SEQ_PRODUCT_CATEGORY", allocationSize = 1, initialValue = 1)
+public class ProductCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BRAND_PRODUCT")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PRODUCT_CATEGORY")
     private Long id;
 
     @Column(nullable = false)
