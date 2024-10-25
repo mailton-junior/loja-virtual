@@ -1,6 +1,7 @@
 package org.project.loja_virtual.model;
 
 import jakarta.persistence.*;
+import org.project.loja_virtual.enums.AddressType;
 
 import java.util.Objects;
 
@@ -8,6 +9,9 @@ import java.util.Objects;
 @Table(name = "ADDRESS")
 @SequenceGenerator(name = "SEQ_ADDRESS", sequenceName = "SEQ_ADDRESS", allocationSize = 1, initialValue = 1)
 public class Address {
+
+    @Enumerated(EnumType.STRING)
+    private AddressType addressType;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ADDRESS")
@@ -101,6 +105,14 @@ public class Address {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public AddressType getAddressType() {
+        return addressType;
+    }
+
+    public void setAddressType(AddressType addressType) {
+        this.addressType = addressType;
     }
 
     @Override
