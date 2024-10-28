@@ -3,12 +3,13 @@ package org.project.loja_virtual.model;
 import jakarta.persistence.*;
 import org.project.loja_virtual.enums.AddressType;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "ADDRESS")
 @SequenceGenerator(name = "SEQ_ADDRESS", sequenceName = "SEQ_ADDRESS", allocationSize = 1, initialValue = 1)
-public class Address {
+public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

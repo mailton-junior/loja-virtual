@@ -2,12 +2,13 @@ package org.project.loja_virtual.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "PAYMENT_FORM")
 @SequenceGenerator(name = "SEQ_PAYMENT_FORM", sequenceName = "SEQ_PAYMENT_FORM", allocationSize = 1, initialValue = 1)
-public class PaymentForm {
+public class PaymentForm implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

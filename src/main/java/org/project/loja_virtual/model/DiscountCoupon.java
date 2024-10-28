@@ -1,0 +1,82 @@
+package org.project.loja_virtual.model;
+
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Objects;
+
+@Entity
+@Table(name = "DISCOUNT_COUPON")
+@SequenceGenerator(name = "SEQ_DISCOUNT_COUPON", sequenceName = "SEQ_DISCOUNT_COUPON", allocationSize = 1, initialValue = 1)
+public class DiscountCoupon implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DISCOUNT_COUPON")
+    private Long id;
+
+    private String codeDescription;
+
+    private BigDecimal discountValue;
+
+    private BigDecimal porcentageDiscount;
+
+    @Temporal(TemporalType.DATE)
+    private Date expirationDate;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCodeDescription() {
+        return codeDescription;
+    }
+
+    public void setCodeDescription(String codeDescription) {
+        this.codeDescription = codeDescription;
+    }
+
+    public BigDecimal getDiscountValue() {
+        return discountValue;
+    }
+
+    public void setDiscountValue(BigDecimal discountValue) {
+        this.discountValue = discountValue;
+    }
+
+    public BigDecimal getPorcentageDiscount() {
+        return porcentageDiscount;
+    }
+
+    public void setPorcentageDiscount(BigDecimal porcentageDiscount) {
+        this.porcentageDiscount = porcentageDiscount;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        DiscountCoupon that = (DiscountCoupon) object;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+}

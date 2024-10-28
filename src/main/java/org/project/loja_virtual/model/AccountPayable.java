@@ -3,6 +3,7 @@ package org.project.loja_virtual.model;
 import jakarta.persistence.*;
 import org.project.loja_virtual.enums.AccountPayablesStatus;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
@@ -10,7 +11,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "ACCOUNT_PAYABLE")
 @SequenceGenerator(name = "SEQ_ACCOUNT_PAYABLE", sequenceName = "SEQ_ACCOUNT_PAYABLE", allocationSize = 1, initialValue = 1)
-public class AccountPayable {
+public class AccountPayable implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
