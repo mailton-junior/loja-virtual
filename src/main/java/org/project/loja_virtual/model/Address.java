@@ -10,6 +10,8 @@ import java.util.Objects;
 @SequenceGenerator(name = "SEQ_ADDRESS", sequenceName = "SEQ_ADDRESS", allocationSize = 1, initialValue = 1)
 public class Address {
 
+    private static final long serialVersionUID = 1L;
+
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
 
