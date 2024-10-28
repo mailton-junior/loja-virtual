@@ -16,6 +16,8 @@ public class ProductReview implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PRODUCT_REVIEW")
     private Long id;
 
+    private String description;
+
     private Integer rating;
 
     @ManyToOne
