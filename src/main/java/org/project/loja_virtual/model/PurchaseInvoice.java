@@ -17,18 +17,23 @@ public class PurchaseInvoice {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PURCHASE_INVOICE")
     private Long id;
 
+    @Column(nullable = false)
     private String invoiceNumber;
 
+    @Column(nullable = false)
     private String invoiceSeries;
 
     private String Description;
 
+    @Column(nullable = false)
     private BigDecimal totalValue;
 
     private BigDecimal discountValue;
 
+    @Column(nullable = false)
     private BigDecimal ICMSValue;
 
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date purchaseDate;
 

@@ -19,18 +19,22 @@ public class AccountPayable implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ACCOUNT_PAYABLE")
     private Long id;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     private BigDecimal totalValue;
 
     private BigDecimal discountValue;
 
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dueDate;
 
     @Temporal(TemporalType.DATE)
     private Date paymentDate;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private AccountPayablesStatus accountPayablesStatus;
 

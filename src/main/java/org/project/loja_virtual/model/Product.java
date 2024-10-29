@@ -17,23 +17,30 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PRODUCT")
     private Long id;
 
+    @Column(nullable = false)
     private String UnityType;
 
+    @Column(nullable = false)
     private String name;
 
-    @Column(columnDefinition = "TEXT", length = 2000)
+    @Column(columnDefinition = "TEXT", length = 2000, nullable = false)
     private String description;
 
     // TODO - Add Nota Item Produto
 
+    @Column(nullable = false)
     private Double weight;
 
+    @Column(nullable = false)
     private Double height;
 
+    @Column(nullable = false)
     private Double depth;
 
+    @Column(nullable = false)
     private BigDecimal SalePrice = BigDecimal.ZERO;
 
+    @Column(nullable = false)
     private Integer stockQuantityStock = 0;
 
     private Integer alertQuantityStock = 0;

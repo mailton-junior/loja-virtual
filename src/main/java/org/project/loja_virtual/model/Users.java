@@ -19,20 +19,28 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USERS")
     private Long id;
 
+    @Column(nullable = false)
     private String login;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date actualDatePassword;
 
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "PERSON_ID", nullable = false,
+    foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_USERS_PERSON"))
+    private Person person;
+
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USER_ACCESS", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "access_id"},
-            name = "UK_USER_ACCESS"),
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", table = "USERS", unique = false,
-                    foreignKey = @ForeignKey(name = "FK_USER_ACCESS_USER", value = ConstraintMode.CONSTRAINT)),
-            inverseJoinColumns = @JoinColumn(name = "access_id", referencedColumnName = "id", table = "ACCESS", unique = false,
-                    foreignKey = @ForeignKey(name = "FK_USER_ACCESS_ACCESS", value = ConstraintMode.CONSTRAINT)))
+    name = "UK_USER_ACCESS"),
+    joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", table = "USERS", unique = false,
+    foreignKey = @ForeignKey(name = "FK_USER_ACCESS_USER", value = ConstraintMode.CONSTRAINT)),
+    inverseJoinColumns = @JoinColumn(name = "access_id", referencedColumnName = "id", table = "ACCESS", unique = false,
+    foreignKey = @ForeignKey(name = "FK_USER_ACCESS_ACCESS", value = ConstraintMode.CONSTRAINT)))
     private List<Access> accesses;
 
 
@@ -70,5 +78,13 @@ public class Users implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

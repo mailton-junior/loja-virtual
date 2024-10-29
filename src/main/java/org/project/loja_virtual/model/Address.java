@@ -13,6 +13,7 @@ public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
 
@@ -20,18 +21,24 @@ public class Address implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ADDRESS")
     private Long id;
 
+    @Column(nullable = false)
     private String street;
 
+    @Column(nullable = false)
     private String number;
 
+    @Column(nullable = false)
     private String cep;
 
     private String complement;
 
+    @Column(nullable = false)
     private String neighborhood;
 
+    @Column(nullable = false)
     private String city;
 
+    @Column(nullable = false)
     private String state;
 
     @ManyToOne(targetEntity = Person.class)

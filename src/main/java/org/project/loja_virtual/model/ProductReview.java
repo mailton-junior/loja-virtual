@@ -1,6 +1,7 @@
 package org.project.loja_virtual.model;
 
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,8 +17,10 @@ public class ProductReview implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PRODUCT_REVIEW")
     private Long id;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     private Integer rating;
 
     @ManyToOne

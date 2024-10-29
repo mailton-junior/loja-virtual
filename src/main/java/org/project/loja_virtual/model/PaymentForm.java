@@ -16,6 +16,7 @@ public class PaymentForm implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PAYMENT_FORM")
     private Long id;
 
+    @Column(nullable = false)
     private String description;
 
     public Long getId() {

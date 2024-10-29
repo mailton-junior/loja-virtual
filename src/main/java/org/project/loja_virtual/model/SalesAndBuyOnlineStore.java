@@ -33,6 +33,7 @@ public class SalesAndBuyOnlineStore implements Serializable {
     foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_SALES_AND_BUY_ONLINE_STORE_BILLING_ADDRESS"))
     private Address billingAddress;
 
+    @Column(nullable = false)
     private BigDecimal totalValue;
 
     private BigDecimal discountValue;
@@ -48,17 +49,21 @@ public class SalesAndBuyOnlineStore implements Serializable {
     private SalesInvoice salesInvoice;
 
     @ManyToOne
-    @JoinColumn(name = "DISCOUNT_COUPON_ID", nullable = false,
+    @JoinColumn(name = "DISCOUNT_COUPON_ID",
     foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_SALES_AND_BUY_ONLINE_STORE_DISCOUNT_COUPON"))
     private DiscountCoupon discountCoupon;
 
+    @Column(nullable = false)
     private BigDecimal shippingValue;
 
+    @Column(nullable = false)
     private Integer shippingDays;
 
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date salesDate;
 
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date deliveryDate;
 
