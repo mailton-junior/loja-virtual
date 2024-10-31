@@ -21,7 +21,7 @@ public class Access implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return "";
+        return description;
     }
 
     public Long getId() {
