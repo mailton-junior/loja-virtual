@@ -1,14 +1,18 @@
 package org.project.loja_virtual;
 
-import junit.framework.TestCase;
-import org.junit.Assert;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.project.loja_virtual.controller.AccessController;
 import org.project.loja_virtual.model.Access;
 import org.project.loja_virtual.repository.AccessRepository;
-import org.project.loja_virtual.service.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
@@ -23,8 +27,58 @@ public class LojaVirtualApplicationTests {
 	@Autowired
 	private AccessRepository accessRepository;
 
+	@Autowired
+	private WebApplicationContext wac;
+
+	/*Teste do EndPoint para Salvar*/
 	@Test
-	void saveAccess() {
+	public void testRestApiCadasterAccess() throws Exception {
+		DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(this.wac);
+		MockMvc mockMvc = builder.build();
+
+		Access access = new Access();
+
+		access.setDescription("ROLE_COMPRADOR");
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		ResultActions returnApi = mockMvc.perform
+				(MockMvcRequestBuilders.post("/saveAccess")
+				.content(mapper.writeValueAsString(access))
+				.accept("application/json")
+				.contentType("application/json"));
+
+		/*Converter Retorno da Api para Objeto de Acesso*/
+
+		Access objectReturn = mapper.readValue(returnApi.andReturn().getResponse().getContentAsString(), Access.class);
+
+		assertEquals(access.getDescription(), objectReturn.getDescription());
+	}
+
+	@Test
+	public void testRestApiDeleteAccess() throws Exception {
+		DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(this.wac);
+		MockMvc mockMvc = builder.build();
+
+		Access access = new Access();
+
+		access.setDescription("ROLE_TEST_DELETE");
+
+		access = accessController.saveAccess(access).getBody();
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		ResultActions returnApi = mockMvc.perform
+				(MockMvcRequestBuilders.post("/deleteAccess")
+						.content(mapper.writeValueAsString(access))
+						.accept("application/json")
+						.contentType("application/json"));
+
+		assertEquals("Acesso Deletado", returnApi.andReturn().getResponse().getContentAsString());
+	}
+
+	@Test
+	void testCadaster() {
 		Access access = new Access();
 		access.setDescription("ROLE_ADMIN");
 
