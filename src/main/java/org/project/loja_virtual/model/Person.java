@@ -21,6 +21,9 @@ public abstract class Person implements Serializable {
     @Column(nullable = false)
     private String name;
 
+    @Column
+    private String PersonType;
+
     @Column(nullable = false)
     private String email;
 
@@ -68,6 +71,14 @@ public abstract class Person implements Serializable {
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
+    }
+
+    public String getPersonType() {
+        return PersonType;
+    }
+
+    public void setPersonType(String personType) {
+        PersonType = personType;
     }
 
     @Override
