@@ -8,6 +8,7 @@ import org.project.loja_virtual.model.Access;
 import org.project.loja_virtual.repository.AccessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Profile("test")
 @SpringBootTest(classes = LojaVirtualApplication.class)
 public class LojaVirtualApplicationTests {
 
