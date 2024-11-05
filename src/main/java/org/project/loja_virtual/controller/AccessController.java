@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RestController
 public class AccessController {
@@ -37,4 +39,32 @@ public class AccessController {
         accessRepository.deleteById(access.getId());
         return new ResponseEntity("Acesso Deletado",HttpStatus.OK);
     }
+
+    @ResponseBody
+    @DeleteMapping(value = "/deleteAccessById/{id}")
+    public ResponseEntity<Access> deleteAccessById(@PathVariable Long id) {
+
+        accessRepository.deleteById(id);
+
+        return new ResponseEntity("Acesso Deletado",HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getAccessById/{id}")
+    public ResponseEntity<Access> getAccessById(@PathVariable Long id) {
+
+        Access access = accessRepository.findById(id).get();
+
+        return new ResponseEntity<Access>(access,HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getAccessByDescription/{description}")
+    public ResponseEntity<List<Access>> getAccessByDescription(@PathVariable String description) {
+
+        List<Access> access = accessRepository.findByDescription(description);
+
+        return new ResponseEntity<List<Access>>(access,HttpStatus.OK);
+    }
+
 }
