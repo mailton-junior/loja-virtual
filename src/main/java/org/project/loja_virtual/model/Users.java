@@ -87,4 +87,12 @@ public class Users implements UserDetails {
     public void setPerson(Person person) {
         this.person = person;
     }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
 }
