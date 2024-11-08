@@ -17,7 +17,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.http.HttpSessionListener;
 
-
+/**
+ * Classe de configuração de segurança para o aplicativo da web.
+ * Esta classe é responsável por configurar as configurações de segurança, como autenticação,
+ * autorização e gerenciamento de sessão.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -26,7 +30,13 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements H
     @Autowired
     private ImplementationUserDetailService implementationUserDetailService;
 
-
+    /**
+     * Configura as configurações de segurança HTTP para o aplicativo.
+     * Define quais endpoints são publicamente acessíveis e configura filtros para autenticação JWT.
+     *
+     * @param http o HttpSecurity a ser configurado
+     * @throws Exception se ocorrer um erro durante a configuração
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -51,7 +61,12 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements H
     }
 
 
-    /*Irá consultar o user no banco com Spring Security*/
+    /**
+     * Configura as configurações de autenticação usando um serviço de detalhes do usuário e codificador de senha.
+     *
+     * @param auth o AuthenticationManagerBuilder para configurar
+     * @throws Exception se ocorrer um erro durante a configuração
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(implementationUserDetailService).passwordEncoder(new BCryptPasswordEncoder());
@@ -61,7 +76,12 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements H
 
 
 
-    /*Ignora alguas URL livre de autenticação*/
+    /**
+     * Configura a segurança da web para ignorar certas URLs da autenticação.
+     *
+     * @param web o WebSecurity a ser configurado
+     * @throws Exception se ocorrer um erro durante a configuração
+     */
     @Override
     public void configure(WebSecurity web) throws Exception {
         //web.ignoring().antMatchers(HttpMethod.GET, "/salvarAcesso", "/deleteAcesso")

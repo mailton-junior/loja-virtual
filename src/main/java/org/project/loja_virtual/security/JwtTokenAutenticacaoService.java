@@ -15,23 +15,32 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
-/*Criar a autenticação e retonar também a autenticação JWT*/
+/**
+ * Serviço para lidar com autenticação JWT.
+ * Esta classe fornece métodos para gerar, validar,
+ * e recuperar tokens JWT para autenticação de usuário.
+ */
 @Service
 @Component
 public class JwtTokenAutenticacaoService {
 
 
-    /*Token de validade de 11 dias*/
+    /* Período de validade do token definido para 11 dias (em milissegundos) */
     private static final long EXPIRATION_TIME = 959990000;
 
-    /*Chave de senha para juntar com o JWT*/
+    /* Chave secreta usada para assinar o JWT */
     private static final String SECRET = "ss/-*-*sds565dsd-s/d-s*dsds";
 
     private static final String TOKEN_PREFIX = "Bearer";
-
     private static final String HEADER_STRING = "Authorization";
 
-    // Generates and sends the JWT token to the client
+    /**
+     * Gera um token JWT para o nome de usuário fornecido e o adiciona à resposta.
+     *
+     * @param response o HttpServletResponse ao qual o token será adicionado
+     * @param username o nome de usuário para o qual o token é gerado
+     * @throws Exception se ocorrer um erro ao gerar o token
+     */
     public void addAuthentication(HttpServletResponse response, String username) throws Exception {
         String JWT = Jwts.builder()
                 .setSubject(username) // Sets the subject as the username
@@ -49,7 +58,14 @@ public class JwtTokenAutenticacaoService {
     }
 
 
-    /*Gera o token e da a responsta para o cliente o com JWT*/
+    /**
+     * Recupera e valida o token JWT da solicitação.
+     *
+     * @param request o HttpServletRequest contendo o token
+     * @param response o HttpServletResponse para definir o status e escrever mensagens
+     * @return um objeto Authentication se o token for válido; null caso contrário
+     * @throws IOException se ocorrer um erro ao escrever a resposta
+     */
     public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String token = request.getHeader(HEADER_STRING);
 
@@ -89,7 +105,14 @@ public class JwtTokenAutenticacaoService {
     }
 
 
-    /*Retorna o usuário validado com token ou caso nao seja valido retona null*/
+    /**
+     * Recupera o usuário associado ao token da solicitação.
+     * Este método é semelhante a getAuthentication, mas não gera exceções.
+     *
+     * @param request o HttpServletRequest contendo o token
+     * @param response o HttpServletResponse para manipular CORS
+     * @return um objeto Authentication se o token for válido; null caso contrário
+     */
     public Authentication getAuthetication(HttpServletRequest request, HttpServletResponse response) {
 
         String token = request.getHeader(HEADER_STRING);
@@ -126,7 +149,11 @@ public class JwtTokenAutenticacaoService {
     }
 
 
-    /*Fazendo liberação contra erro de COrs no navegador*/
+    /**
+     * Configura as configurações do CORS para evitar erros do navegador.
+     *
+     * @param response o HttpServletResponse ao qual os cabeçalhos CORS são adicionados
+     */
     private void liberacaoCors(HttpServletResponse response) {
 
         if (response.getHeader("Access-Control-Allow-Origin") == null) {

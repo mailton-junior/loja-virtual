@@ -15,36 +15,41 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Filtro de autenticação para login usando JWT.
+ * Este filtro processa as tentativas de autenticação de usuários
+ * e gera um token JWT em caso de sucesso.
+ */
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    /*Confgurando o gerenciado de autenticacao*/
+    /**
+     * Constrói um filtro de autenticação.
+     *
+     * @param url                   a URL que o filtro deve proteger
+     * @param authenticationManager o gerenciador de autenticação a ser utilizado
+     */
     public JwtLoginFilter(String url, AuthenticationManager authenticationManager) {
-
-        /*Ibriga a autenticat a url*/
-        super(new AntPathRequestMatcher(url));
-
-        /*Gerenciador de autenticao*/
-        setAuthenticationManager(authenticationManager);
-
+        super(new AntPathRequestMatcher(url)); // Configura a URL que requer autenticação
+        setAuthenticationManager(authenticationManager); // Define o gerenciador de autenticação
     }
-
-
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
         Users user;
         try {
+            // Tenta ler os dados do usuário a partir do corpo da requisição
             user = new ObjectMapper().readValue(request.getInputStream(), Users.class);
         } catch (IOException e) {
-            // Retornar erro 400 se o JSON não puder ser lido
+            // Retorna erro 400 se o JSON não puder ser lido
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null; // Retornar nulo ou lançar uma exceção personalizada
+            return null; // Retorna nulo ou pode-se lançar uma exceção personalizada
         }
 
-        // Logar tentativas de autenticação
+        // Loga as tentativas de autenticação
         System.out.println("Tentativa de autenticação para: " + user.getLogin());
 
+        // Tenta autenticar o usuário usando o gerenciador de autenticação
         return getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword())
         );
@@ -54,9 +59,11 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         try {
+            // Gera o token JWT e adiciona ao cabeçalho da resposta
             new JwtTokenAutenticacaoService().addAuthentication(response, authResult.getName());
         } catch (Exception e) {
             e.printStackTrace();
+            // Em caso de erro ao gerar o token, retorna erro 500
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("Erro ao gerar o token: " + e.getMessage());
         }
@@ -65,9 +72,9 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
+        // Retorna erro 401 em caso de falha na autenticação
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("Falha na autenticação: " + failed.getMessage());
     }
-
 }
 

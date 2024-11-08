@@ -13,27 +13,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/*Filtro onde todas as requisicoes serão capturadas para autenticar*/
+/**
+ * Filtro de autenticação JWT que captura todas as requisições
+ * para autenticar o usuário antes de processá-las.
+ */
 public class JwtApiAutenticacaoFilter extends GenericFilterBean {
 
-
-
+    /**
+     * Método que processa o filtro de autenticação.
+     *
+     * @param request  a requisição do cliente
+     * @param response a resposta a ser enviada ao cliente
+     * @param chain    a cadeia de filtros para continuar o processamento
+     * @throws IOException      se ocorrer um erro de I/O
+     * @throws ServletException se ocorrer um erro de servlet
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        /*Estabele a autenticao do user*/
+        // Estabelece a autenticação do usuário
+        Authentication authentication = new JwtTokenAutenticacaoService()
+                .getAuthetication((HttpServletRequest) request, (HttpServletResponse) response);
 
-        Authentication authentication = new JwtTokenAutenticacaoService().
-                getAuthetication((HttpServletRequest) request, (HttpServletResponse) response);
-
-        /*Coloca o processo de autenticacao para o spring secutiry*/
+        // Define o contexto de segurança com a autenticação obtida
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // Continua a cadeia de filtros
         chain.doFilter(request, response);
-
     }
-
-
 }
 
