@@ -10,21 +10,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ImplementationUserDetailService implements UserDetailsService {
+public class ImplementationUserDetailService implements UserDetailsService{
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         Users user = userRepository.findUserByLogin(username);
-
         if (user == null) {
-            throw new UsernameNotFoundException("Usuário não encontrado!");
+            System.out.println("Senha fornecida: " + user.getPassword());
+
+            throw new UsernameNotFoundException("User not found: " + username);
         }
+        System.out.println("Senha fornecida: " + user.getPassword());
 
-        return new User(user.getLogin(), user.getPassword(), user.getAuthorities());
-
+        return user;
     }
 }

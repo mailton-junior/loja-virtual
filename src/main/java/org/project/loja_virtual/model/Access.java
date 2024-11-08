@@ -1,9 +1,9 @@
 package org.project.loja_virtual.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity

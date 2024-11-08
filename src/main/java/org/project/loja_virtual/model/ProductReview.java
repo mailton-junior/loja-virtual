@@ -1,7 +1,6 @@
 package org.project.loja_virtual.model;
 
-import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
+import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.Objects;

@@ -1,9 +1,9 @@
 package org.project.loja_virtual.model;
 
-import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -34,13 +34,13 @@ public class Users implements UserDetails {
     foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_USERS_PERSON"))
     private Person person;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER) // Altere de LAZY para EAGER
     @JoinTable(name = "USER_ACCESS", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "access_id"},
-    name = "UK_USER_ACCESS"),
-    joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", table = "USERS", unique = false,
-    foreignKey = @ForeignKey(name = "FK_USER_ACCESS_USER", value = ConstraintMode.CONSTRAINT)),
-    inverseJoinColumns = @JoinColumn(name = "access_id", referencedColumnName = "id", table = "ACCESS", unique = false,
-    foreignKey = @ForeignKey(name = "FK_USER_ACCESS_ACCESS", value = ConstraintMode.CONSTRAINT)))
+            name = "UK_USER_ACCESS"),
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", table = "USERS", unique = false,
+                    foreignKey = @ForeignKey(name = "FK_USER_ACCESS_USER", value = ConstraintMode.CONSTRAINT)),
+            inverseJoinColumns = @JoinColumn(name = "access_id", referencedColumnName = "id", table = "ACCESS", unique = false,
+                    foreignKey = @ForeignKey(name = "FK_USER_ACCESS_ACCESS", value = ConstraintMode.CONSTRAINT)))
     private List<Access> accesses;
 
 

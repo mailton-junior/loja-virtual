@@ -1,8 +1,8 @@
 package org.project.loja_virtual.model;
 
-import jakarta.persistence.*;
 import org.project.loja_virtual.enums.AccountPayablesStatus;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;

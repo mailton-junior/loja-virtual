@@ -1,7 +1,6 @@
 package org.project.loja_virtual.model;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;

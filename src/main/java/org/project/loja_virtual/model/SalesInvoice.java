@@ -1,7 +1,6 @@
 package org.project.loja_virtual.model;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -33,7 +32,7 @@ public class SalesInvoice implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "SALES_AND_BUY_ONLINE_STORE_ID", nullable = false,
-    foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_SALES_INVOICE_SALES_AND_BUY_ONLINE_STORE"))
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_SALES_INVOICE_SALES_AND_BUY_ONLINE_STORE"))
     private SalesAndBuyOnlineStore salesAndBuyOnlineStore;
 
     public Long getId() {
