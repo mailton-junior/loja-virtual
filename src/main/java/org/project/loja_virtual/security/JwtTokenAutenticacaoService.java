@@ -73,7 +73,7 @@ public class JwtTokenAutenticacaoService {
             String tokenLimpo = token.replace(TOKEN_PREFIX, "").trim();
 
             try {
-                // Faz a validação do token do usuário na requisição e obtém o USER
+                // Valida o token
                 String user = Jwts.parser()
                         .setSigningKey(SECRET)
                         .parseClaimsJws(tokenLimpo)
@@ -93,55 +93,21 @@ public class JwtTokenAutenticacaoService {
                                 usuario.getAuthorities());
                     }
                 }
-            } catch (Exception e) {
-                // Token inválido ou expirado
+            } catch (io.jsonwebtoken.ExpiredJwtException e) {
+                // Token expirado
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Token inválido ou expirado");
+                response.getWriter().write("Token expirado. Faça login novamente.");
+            } catch (io.jsonwebtoken.SignatureException e) {
+                // Assinatura inválida
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Assinatura do token inválida.");
+            } catch (Exception e) {
+                // Outras exceções
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Erro ao processar token.");
+            } finally {
+                liberacaoCors(response);
             }
-        }
-
-        liberacaoCors(response);
-        return null;
-    }
-
-
-    /**
-     * Recupera o usuário associado ao token da solicitação.
-     * Este método é semelhante a getAuthentication, mas não gera exceções.
-     *
-     * @param request o HttpServletRequest contendo o token
-     * @param response o HttpServletResponse para manipular CORS
-     * @return um objeto Authentication se o token for válido; null caso contrário
-     */
-    public Authentication getAuthetication(HttpServletRequest request, HttpServletResponse response) {
-
-        String token = request.getHeader(HEADER_STRING);
-
-        if (token != null) {
-
-            String tokenLimpo = token.replace(TOKEN_PREFIX, "").trim();
-
-            /*Faz a validacao do token do usuário na requisicao e obtem o USER*/
-            String user = Jwts.parser().
-                    setSigningKey(SECRET)
-                    .parseClaimsJws(tokenLimpo)
-                    .getBody().getSubject(); /*ADMIN ou Alex*/
-
-            if (user != null) {
-
-                Users usuario = ApplicationContextLoad.
-                        getApplicationContext().
-                        getBean(UserRepository.class).findUserByLogin(user);
-
-                if (usuario != null) {
-                    return new UsernamePasswordAuthenticationToken(
-                            usuario.getLogin(),
-                            usuario.getPassword(),
-                            usuario.getAuthorities());
-                }
-
-            }
-
         }
 
         liberacaoCors(response);

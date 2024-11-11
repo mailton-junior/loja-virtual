@@ -34,7 +34,7 @@ public class JwtApiAutenticacaoFilter extends GenericFilterBean {
 
         // Estabelece a autenticação do usuário
         Authentication authentication = new JwtTokenAutenticacaoService()
-                .getAuthetication((HttpServletRequest) request, (HttpServletResponse) response);
+                .getAuthentication((HttpServletRequest) request, (HttpServletResponse) response);
 
         // Define o contexto de segurança com a autenticação obtida
         SecurityContextHolder.getContext().setAuthentication(authentication);
