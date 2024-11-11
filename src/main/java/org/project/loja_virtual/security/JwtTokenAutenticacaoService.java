@@ -78,7 +78,7 @@ public class JwtTokenAutenticacaoService {
                         .setSigningKey(SECRET)
                         .parseClaimsJws(tokenLimpo)
                         .getBody()
-                        .getSubject(); // ADMIN ou Alex
+                        .getSubject();
 
                 if (user != null) {
                     Users usuario = ApplicationContextLoad
