@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.project.loja_virtual.controller.AccessController;
+import org.project.loja_virtual.controller.ExceptionCustom;
 import org.project.loja_virtual.model.Access;
 import org.project.loja_virtual.repository.AccessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,7 +178,7 @@ public class LojaVirtualApplicationTests {
     }
 
     @Test
-    void testCadaster() {
+    void testCadaster() throws ExceptionCustom {
         Access access = new Access();
         access.setDescription("ROLE_ADMIN");
 

@@ -1,9 +1,8 @@
 package org.project.loja_virtual.controller;
 
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.project.loja_virtual.model.dto.ObjectErroDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.sql.SQLException;
 import java.util.List;
 
+
 /**
  * Classe responsável por tratar exceções de forma centralizada na aplicação.
  * Oferece respostas padronizadas em casos de erros de validação, integridade de dados e genéricos.
@@ -25,86 +25,73 @@ import java.util.List;
 @RestControllerAdvice
 public class ControllExceptions extends ResponseEntityExceptionHandler {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(ControllExceptions.class);
+    @ExceptionHandler(ExceptionCustom.class)
+    public ResponseEntity<Object> handleExceptionCustom(ExceptionCustom ex) {
 
-    /**
-     * Manipula exceções genéricas e fornece uma resposta padronizada.
-     *
-     * @param ex      A exceção lançada.
-     * @param body    O corpo da resposta original.
-     * @param headers Os cabeçalhos HTTP da resposta.
-     * @param status  O status HTTP da resposta.
-     * @param request A solicitação web associada.
-     * @return Um ResponseEntity contendo detalhes do erro.
-     */
+        ObjectErroDTO objectErroDTO = new ObjectErroDTO();
+
+        objectErroDTO.setError(ex.getMessage());
+        objectErroDTO.setCode(HttpStatus.OK.toString());
+
+        return new ResponseEntity<Object>(objectErroDTO, HttpStatus.OK);
+    }
+
+
+    /*Captura execeçoes do projeto*/
+    @ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
+                                                             HttpStatus status, WebRequest request) {
 
-        ObjectErroDTO errorResponse = new ObjectErroDTO();
-        String errorMessage = getErrorMessage(ex);
+        ObjectErroDTO objectErroDTO = new ObjectErroDTO();
 
-        errorResponse.setError(errorMessage);
-        errorResponse.setCode(status.value() + " ==> " + status.getReasonPhrase());
+        String msg = "";
 
-        logError(ex); // Log do erro para auditoria
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-    }
-
-    /**
-     * Manipula exceções relacionadas à integridade de dados, como violações de chave ou constraints.
-     *
-     * @param ex A exceção lançada.
-     * @return Um ResponseEntity com detalhes sobre a violação de dados.
-     */
-    @ExceptionHandler({DataIntegrityViolationException.class, ConstraintViolationException.class, SQLException.class})
-    protected ResponseEntity<Object> handleDataIntegrityException(Exception ex) {
-
-        ObjectErroDTO errorResponse = new ObjectErroDTO();
-        String errorMessage = getRootCauseMessage(ex);
-
-        errorResponse.setError(errorMessage);
-        errorResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR + " ==> " + HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-
-        logError(ex); // Log do erro para auditoria
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-    }
-
-    /**
-     * Extrai a mensagem de erro de exceções específicas, como validação de argumentos.
-     *
-     * @param ex A exceção lançada.
-     * @return Uma string contendo a mensagem do erro.
-     */
-    private String getErrorMessage(Exception ex) {
         if (ex instanceof MethodArgumentNotValidException) {
-            List<ObjectError> errors = ((MethodArgumentNotValidException) ex).getBindingResult().getAllErrors();
-            StringBuilder messageBuilder = new StringBuilder();
-            errors.forEach(error -> messageBuilder.append(error.getDefaultMessage()).append("\n"));
-            return messageBuilder.toString().trim();
+
+            List<ObjectError> list = ((MethodArgumentNotValidException) ex).getBindingResult().getAllErrors();
+
+            for (ObjectError objectError : list) {
+                msg += objectError.getDefaultMessage() + "\n";
+            }
+        } else {
+            msg = ex.getMessage();
         }
-        return ex.getMessage();
+
+        objectErroDTO.setError(msg);
+        objectErroDTO.setCode(status.value() + " ==> " + status.getReasonPhrase());
+
+        ex.printStackTrace();
+
+        return new ResponseEntity<Object>(objectErroDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    /**
-     * Recupera a mensagem raiz da causa de exceções de integridade de dados.
-     *
-     * @param ex A exceção lançada.
-     * @return Uma string com a mensagem da causa raiz do erro.
-     */
-    private String getRootCauseMessage(Exception ex) {
-        Throwable rootCause = ex.getCause();
-        while (rootCause != null && rootCause.getCause() != null) {
-            rootCause = rootCause.getCause();
-        }
-        return rootCause != null ? rootCause.getMessage() : ex.getMessage();
-    }
 
-    /**
-     * Loga detalhes do erro no sistema para auditoria e depuração.
-     *
-     * @param ex A exceção lançada.
-     */
-    private void logError(Exception ex) {
-        LOGGER.error("Erro capturado: " + ex.getClass().getName() + " - " + ex.getMessage());
+    /*Captura erro na parte de banco*/
+    @ExceptionHandler({DataIntegrityViolationException.class,
+            ConstraintViolationException.class, SQLException.class})
+    protected ResponseEntity<Object> handleExceptionDataIntegry(Exception ex) {
+
+        ObjectErroDTO objectErroDTO = new ObjectErroDTO();
+
+        String msg = "";
+
+        if (ex instanceof DataIntegrityViolationException) {
+            msg = "Erro de integridade no banco: " + ((DataIntegrityViolationException) ex).getCause().getCause().getMessage();
+        } else if (ex instanceof ConstraintViolationException) {
+            msg = "Erro de chave estrangeira: " + ((ConstraintViolationException) ex).getCause().getCause().getMessage();
+        } else if (ex instanceof SQLException) {
+            msg = "Erro de SQL do Banco: " + ((SQLException) ex).getCause().getCause().getMessage();
+        } else {
+            msg = ex.getMessage();
+        }
+
+        objectErroDTO.setError(msg);
+        objectErroDTO.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+
+        ex.printStackTrace();
+
+        return new ResponseEntity<Object>(objectErroDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 }

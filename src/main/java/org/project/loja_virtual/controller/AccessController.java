@@ -25,7 +25,14 @@ public class AccessController {
 
     @ResponseBody
     @PostMapping(value = "/saveAccess")
-    public ResponseEntity<Access> saveAccess(@RequestBody Access access) {
+    public ResponseEntity<Access> saveAccess(@RequestBody Access access) throws ExceptionCustom {
+
+        if (access.getId() == null){
+            List<Access> accessList = accessRepository.findByDescription(access.getDescription().toUpperCase());
+            if (!accessList.isEmpty()){
+                throw new ExceptionCustom("Acesso já cadastrado com a descrição " + access.getDescription());
+            }
+        }
 
         Access accessSaved = accessService.save(access);
 
@@ -51,9 +58,13 @@ public class AccessController {
 
     @ResponseBody
     @GetMapping(value = "/getAccessById/{id}")
-    public ResponseEntity<Access> getAccessById(@PathVariable Long id) {
+    public ResponseEntity<Access> getAccessById(@PathVariable Long id) throws ExceptionCustom {
 
-        Access access = accessRepository.findById(id).get();
+        Access access = accessRepository.findById(id).orElse(null);
+
+        if (access == null) {
+            throw new ExceptionCustom("Acesso não encontrado com id " + id);
+        }
 
         return new ResponseEntity<Access>(access,HttpStatus.OK);
     }
@@ -62,7 +73,7 @@ public class AccessController {
     @GetMapping(value = "/getAccessByDescription/{description}")
     public ResponseEntity<List<Access>> getAccessByDescription(@PathVariable String description) {
 
-        List<Access> access = accessRepository.findByDescription(description);
+        List<Access> access = accessRepository.findByDescription(description.toUpperCase());
 
         return new ResponseEntity<List<Access>>(access,HttpStatus.OK);
     }
