@@ -35,6 +35,11 @@ public class SalesInvoice implements Serializable {
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_SALES_INVOICE_SALES_AND_BUY_ONLINE_STORE"))
     private SalesAndBuyOnlineStore salesAndBuyOnlineStore;
 
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ENTERPRISE_ID", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_ENTERPRISE_ID"))
+    private Person enterprise;
+
     public Long getId() {
         return id;
     }
@@ -89,6 +94,14 @@ public class SalesInvoice implements Serializable {
 
     public void setSalesAndBuyOnlineStore(SalesAndBuyOnlineStore salesAndBuyOnlineStore) {
         this.salesAndBuyOnlineStore = salesAndBuyOnlineStore;
+    }
+
+    public Person getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Person enterprise) {
+        this.enterprise = enterprise;
     }
 
     @Override

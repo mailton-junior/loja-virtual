@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,7 +44,7 @@ public class LojaVirtualApplicationTests {
 
         Access access = new Access();
 
-        access.setDescription("ROLE_COMPRADOR");
+        access.setDescription("ROLE_COMPRADOR" + Calendar.getInstance().getTimeInMillis());
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -180,13 +181,15 @@ public class LojaVirtualApplicationTests {
     @Test
     void testCadaster() throws ExceptionCustom {
         Access access = new Access();
-        access.setDescription("ROLE_ADMIN");
+
+        String description = "ROLE_ADMIN" + Calendar.getInstance().getTimeInMillis();
+        access.setDescription(description);
 
         access = accessController.saveAccess(access).getBody();
 
         assertNotNull(access, "Access should not be null");
         assertEquals(true, access.getId() > 0);
-        assertEquals("ROLE_ADMIN", access.getDescription());
+        assertEquals(description, access.getDescription());
 
         /*Teste de Carregamento*/
         Access access2 = accessRepository.findById(access.getId()).get();

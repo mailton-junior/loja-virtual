@@ -26,6 +26,11 @@ public class ProductImage implements Serializable {
     foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_PRODUCT_IMAGE_PRODUCT"))
     private Product product;
 
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ENTERPRISE_ID", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_ENTERPRISE_ID"))
+    private Person enterprise;
+
     public Long getId() {
         return id;
     }
@@ -56,6 +61,14 @@ public class ProductImage implements Serializable {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Person getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Person enterprise) {
+        this.enterprise = enterprise;
     }
 
     @Override

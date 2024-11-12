@@ -46,6 +46,11 @@ public class PurchaseInvoice {
     foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_PURCHASE_INVOICE_ACCOUNT_PAYABLE"))
     private AccountPayable accountPayable;
 
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ENTERPRISE_ID", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_ENTERPRISE_ID"))
+    private Person enterprise;
+
     public Long getId() {
         return id;
     }
@@ -124,6 +129,14 @@ public class PurchaseInvoice {
 
     public void setAccountPayable(AccountPayable accountPayable) {
         this.accountPayable = accountPayable;
+    }
+
+    public Person getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Person enterprise) {
+        this.enterprise = enterprise;
     }
 
     @Override

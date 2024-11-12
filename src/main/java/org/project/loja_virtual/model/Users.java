@@ -19,7 +19,7 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USERS")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login;
 
     @Column(nullable = false)
@@ -31,8 +31,13 @@ public class Users implements UserDetails {
 
     @ManyToOne(targetEntity = Person.class)
     @JoinColumn(name = "PERSON_ID", nullable = false,
-    foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_USERS_PERSON"))
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_USERS_PERSON"))
     private Person person;
+
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ENTERPRISE_ID", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_ENTERPRISE_ID"))
+    private Person enterprise;
 
     @OneToMany(fetch = FetchType.EAGER) // Altere de LAZY para EAGER
     @JoinTable(name = "USER_ACCESS", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "access_id"},
@@ -94,5 +99,13 @@ public class Users implements UserDetails {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public Person getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Person enterprise) {
+        this.enterprise = enterprise;
     }
 }

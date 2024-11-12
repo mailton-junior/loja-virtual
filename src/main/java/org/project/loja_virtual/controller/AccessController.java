@@ -22,7 +22,6 @@ public class AccessController {
     private AccessRepository accessRepository;
 
 
-
     @ResponseBody
     @PostMapping(value = "/saveAccess")
     public ResponseEntity<Access> saveAccess(@RequestBody Access access) throws ExceptionCustom {

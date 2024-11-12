@@ -24,6 +24,11 @@ public class InvoiceItemProduct {
     foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_INVOICE_ITEM_PRODUCT_PRODUCT"))
     private Product product;
 
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ENTERPRISE_ID", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_ENTERPRISE_ID"))
+    private Person enterprise;
+
     @Column(nullable = false)
     private Double quantity;
 
@@ -57,6 +62,14 @@ public class InvoiceItemProduct {
 
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+
+    public Person getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Person enterprise) {
+        this.enterprise = enterprise;
     }
 
     @Override

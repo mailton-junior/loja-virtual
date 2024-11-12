@@ -24,6 +24,11 @@ public class PaymentForm implements Serializable {
     @Column(nullable = false)
     private String description;
 
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ENTERPRISE_ID", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_ENTERPRISE_ID"))
+    private Person enterprise;
+
     public Long getId() {
         return id;
     }
@@ -38,6 +43,14 @@ public class PaymentForm implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Person getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Person enterprise) {
+        this.enterprise = enterprise;
     }
 
     @Override

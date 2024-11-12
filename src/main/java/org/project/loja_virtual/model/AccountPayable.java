@@ -46,6 +46,11 @@ public class AccountPayable implements Serializable {
     @JoinColumn(name = "person_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_SUPPLIER_PERSON"))
     private Person supplierPerson;
 
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ENTERPRISE_ID", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_ENTERPRISE_ID"))
+    private Person enterprise;
+
     public Long getId() {
         return id;
     }
@@ -116,6 +121,14 @@ public class AccountPayable implements Serializable {
 
     public void setSupplierPerson(Person supplierPerson) {
         this.supplierPerson = supplierPerson;
+    }
+
+    public Person getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Person enterprise) {
+        this.enterprise = enterprise;
     }
 
     @Override

@@ -289,7 +289,7 @@ CREATE TABLE public.entity_person (
     phone character varying(255) NOT NULL,
     category character varying(255),
     cnpj character varying(255) NOT NULL,
-    company_name character varying(255) NOT NULL,
+    social_reason character varying(255) NOT NULL,
     fantasy_name character varying(255) NOT NULL,
     municipal_registration character varying(255),
     state_registration character varying(255) NOT NULL

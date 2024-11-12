@@ -42,6 +42,11 @@ public class Product implements Serializable {
     @Column(nullable = false)
     private Integer stockQuantityStock = 0;
 
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ENTERPRISE_ID", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_ENTERPRISE_ID"))
+    private Person enterprise;
+
     private Integer alertQuantityStock = 0;
 
     private String linkYoutube;
@@ -162,6 +167,14 @@ public class Product implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Person getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Person enterprise) {
+        this.enterprise = enterprise;
     }
 
     @Override

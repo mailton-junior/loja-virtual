@@ -25,40 +25,16 @@ public class EntityPerson extends Person implements Serializable {
     private String fantasyName;
 
     @Column(nullable = false)
-    private String companyName;
+    private String socialReason;
 
     private String category;
 
-    public String getCategory() {
-        return category;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getFantasyName() {
-        return fantasyName;
-    }
-
-    public void setFantasyName(String fantasyName) {
-        this.fantasyName = fantasyName;
-    }
-
-    public String getMunicipalRegistration() {
-        return municipalRegistration;
-    }
-
-    public void setMunicipalRegistration(String municipalRegistration) {
-        this.municipalRegistration = municipalRegistration;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
     public String getStateRegistration() {
@@ -69,11 +45,35 @@ public class EntityPerson extends Person implements Serializable {
         this.stateRegistration = stateRegistration;
     }
 
-    public String getCnpj() {
-        return cnpj;
+    public String getMunicipalRegistration() {
+        return municipalRegistration;
     }
 
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
+    public void setMunicipalRegistration(String municipalRegistration) {
+        this.municipalRegistration = municipalRegistration;
+    }
+
+    public String getFantasyName() {
+        return fantasyName;
+    }
+
+    public void setFantasyName(String fantasyName) {
+        this.fantasyName = fantasyName;
+    }
+
+    public String getSocialReason() {
+        return socialReason;
+    }
+
+    public void setSocialReason(String socialReason) {
+        this.socialReason = socialReason;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

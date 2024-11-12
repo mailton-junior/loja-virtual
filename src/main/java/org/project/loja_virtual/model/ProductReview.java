@@ -27,6 +27,11 @@ public class ProductReview implements Serializable {
     foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_PRODUCT_REVIEW_PERSON"))
     private Person person;
 
+    @ManyToOne(targetEntity = Person.class)
+    @JoinColumn(name = "ENTERPRISE_ID", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_ENTERPRISE_ID"))
+    private Person enterprise;
+
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID", nullable = false,
     foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "FK_PRODUCT_REVIEW_PRODUCT"))
@@ -75,5 +80,13 @@ public class ProductReview implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public Person getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Person enterprise) {
+        this.enterprise = enterprise;
     }
 }
